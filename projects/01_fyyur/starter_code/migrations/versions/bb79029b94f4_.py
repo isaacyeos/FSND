@@ -25,7 +25,7 @@ def upgrade():
     sa.Column('artist_id', sa.Integer(), nullable=True),
     sa.Column('artist_name', sa.String(), nullable=True),
     sa.Column('artist_image_link', sa.String(), nullable=True),
-    sa.Column('start_time', sa.DateTime(), nullable=True),
+    sa.Column('start_time', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.add_column('Artist', sa.Column('website', sa.String(), nullable=True))
