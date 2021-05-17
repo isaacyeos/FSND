@@ -5,7 +5,7 @@
 import json
 import dateutil.parser
 import babel
-from flask import Flask, render_template, request, Response, flash, redirect, url_for
+from flask import Flask, render_template, request, Response, flash, redirect, url_for, abort, jsonify
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 import logging
@@ -14,6 +14,7 @@ from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 import datetime
+import sys
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -214,6 +215,7 @@ def search_artists():
 @app.route('/artists/<int:artist_id>')
 def show_artist(artist_id):
   # shows the artist page with the given artist_id
+  # TODO: use Artist.shows instead
   artist = Artist.query.filter(Artist.id == artist_id)[0]
   artist_data = {}
   artist_data['id'] = artist.id
@@ -262,53 +264,118 @@ def show_artist(artist_id):
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
 def edit_artist(artist_id):
   form = ArtistForm()
-  artist={
-    "id": 4,
-    "name": "Guns N Petals",
-    "genres": ["Rock n Roll"],
-    "city": "San Francisco",
-    "state": "CA",
-    "phone": "326-123-5000",
-    "website": "https://www.gunsnpetalsband.com",
-    "facebook_link": "https://www.facebook.com/GunsNPetals",
-    "seeking_venue": True,
-    "seeking_description": "Looking for shows to perform at in the San Francisco Bay Area!",
-    "image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80"
+  artist = Artist.query.filter(Artist.id == artist_id)[0]
+  artist_data={
+    "id": artist.id,
+    "name": artist.name,
+    "genres": json.loads(artist.genres),
+    "city": artist.city,
+    "state": artist.state,
+    "phone": artist.phone,
+    "website": artist.website,
+    "facebook_link": artist.facebook_link,
+    "seeking_venue": artist.seeking_venue,
+    "seeking_description": artist.seeking_description,
+    "image_link": artist.image_link
   }
   # TODO: populate form with fields from artist with ID <artist_id>
-  return render_template('forms/edit_artist.html', form=form, artist=artist)
+  return render_template('forms/edit_artist.html', form=form, artist=artist_data)
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
-  # TODO: take values from the form submitted, and update existing
   # artist record with ID <artist_id> using the new attributes
-
-  return redirect(url_for('show_artist', artist_id=artist_id))
+  error = False
+  form = ArtistForm(request.form, meta={'csrf': False})
+  if form.validate():
+    try:
+      artist = Artist.query.get(artist_id)
+      artist_form = form.data
+      genres = json.dumps(artist_form['genres'])
+      artist.genres = genres
+      for key in artist_form:
+        if artist_form[key] == '': # skip empty fields
+          continue
+        if key == 'website_link':
+          artist.__setattr__('website', artist_form[key])
+        if key == 'genres':
+          continue
+        artist.__setattr__(key, artist_form[key])
+      db.session.commit()
+    except():
+      db.session.rollback()
+      error = True
+      print(sys.exc_info())
+    finally:
+      db.session.close()
+    if error:
+      flash('error committing to database')
+      return redirect(url_for('show_artist', artist_id=artist_id))
+    else:
+      return redirect(url_for('show_artist', artist_id=artist_id))
+  else:
+    for field, err in form.errors.items():
+      for e in err:
+        flash(field + ': ' + e)
+    # https://stackoverflow.com/questions/21294889/how-to-get-access-to-error-message-from-abort-command-when-using-custom-error-ha
+    # abort(500, {'message': str(message)})
+    return redirect(url_for('show_artist', artist_id=artist_id))
 
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
 def edit_venue(venue_id):
   form = VenueForm()
-  venue={
-    "id": 1,
-    "name": "The Musical Hop",
-    "genres": ["Jazz", "Reggae", "Swing", "Classical", "Folk"],
-    "address": "1015 Folsom Street",
-    "city": "San Francisco",
-    "state": "CA",
-    "phone": "123-123-1234",
-    "website": "https://www.themusicalhop.com",
-    "facebook_link": "https://www.facebook.com/TheMusicalHop",
-    "seeking_talent": True,
-    "seeking_description": "We are on the lookout for a local artist to play every two weeks. Please call us.",
-    "image_link": "https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"
+  venue = Venue.query.filter(Venue.id == venue_id)[0]
+  venue_data={
+    "id": venue.id,
+    "name": venue.name,
+    "genres": json.loads(venue.genres),
+    "address": venue.address,
+    "city": venue.city,
+    "state": venue.state,
+    "phone": venue.phone,
+    "website": venue.website,
+    "facebook_link": venue.facebook_link,
+    "seeking_talent": venue.seeking_talent,
+    "seeking_description": venue.seeking_description,
+    "image_link": venue.image_link
   }
   # TODO: populate form with values from venue with ID <venue_id>
-  return render_template('forms/edit_venue.html', form=form, venue=venue)
+  return render_template('forms/edit_venue.html', form=form, venue=venue_data)
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
-  # TODO: take values from the form submitted, and update existing
   # venue record with ID <venue_id> using the new attributes
+  error = False
+  form = VenueForm(request.form, meta={'csrf': False})
+  if form.validate():
+    try:
+      venue = Venue.query.get(venue_id)
+      venue_form = form.data
+      genres = json.dumps(venue_form['genres'])
+      venue.genres = genres
+      for key in venue_form:
+        if venue_form[key] == '': # skip empty fields
+          continue
+        if key == 'website_link':
+          venue.__setattr__('website', venue_form[key])
+        if key == 'genres':
+          continue
+        venue.__setattr__(key, venue_form[key])
+      db.session.commit()
+    except():
+      db.session.rollback()
+      error = True
+      print(sys.exc_info())
+    finally:
+      db.session.close()
+    if error:
+      flash('error committing to database')
+      return redirect(url_for('show_venue', venue_id=venue_id))
+    else:
+      return redirect(url_for('show_venue', venue_id=venue_id))
+  else:
+    for field, err in form.errors.items():
+      for e in err:
+        flash(field + ': ' + e)
   return redirect(url_for('show_venue', venue_id=venue_id))
 
 #  Create Artist
