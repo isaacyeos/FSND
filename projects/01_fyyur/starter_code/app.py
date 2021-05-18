@@ -15,6 +15,8 @@ from forms import *
 from flask_migrate import Migrate
 import datetime
 import sys
+from sqlalchemy import exc
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -83,7 +85,7 @@ def venues():
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
-  # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
+  # implement search on artists with partial string search. Ensure it is case-insensitive.
   
   search_term = request.form.get('search_term', '')
   venue_query = Venue.query.filter(Venue.name.ilike('%' + search_term + '%'))
@@ -108,7 +110,7 @@ def show_venue(venue_id):
   venue_data = {}
   venue_data['id'] = venue.id
   venue_data['name'] = venue.name
-  venue_data['genres'] = json.loads(venue.genres)
+  venue_data['genres'] = venue.genres
   venue_data['address'] = venue.address
   venue_data['city'] = venue.city
   venue_data['state'] = venue.state
@@ -162,10 +164,9 @@ def create_venue_submission():
   if form.validate():
     venue_form = form.data
     try:
-      genres = json.dumps(venue_form['genres'])
       venue = Venue(
         name=venue_form['name'],
-        genres=genres,
+        genres=venue_form['genres'], # alternative: request.form.getlist('genres')
         city=venue_form['city'],
         state=venue_form['state'],
         address=venue_form['address'],
@@ -196,14 +197,27 @@ def create_venue_submission():
         flash(field + ': ' + e)
     return redirect(url_for('create_venue_form'))
 
-@app.route('/venues/<venue_id>', methods=['DELETE'])
+@app.route('/venues/<int:venue_id>', methods=['POST'])
 def delete_venue(venue_id):
   # TODO: Complete this endpoint for taking a venue_id, and using
   # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
 
   # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button delete it from the db then redirect the user to the homepage
-  return None
+  try:
+    venue = Venue.query.get(venue_id)
+    db.session.delete(venue)
+    db.session.commit()
+    flash('The Venue has been successfully deleted!')
+    return render_template('pages/home.html')
+  except exc.SQLAlchemyError as e:
+    print(str(e.__dict__['orig']))
+    db.session.rollback()
+    flash('Delete was unsuccessful. Try again!')
+    return redirect(url_for('venues'))
+  finally:
+    db.session.close()
+    return render_template('pages/home.html')
 
 #  Artists
 #  ----------------------------------------------------------------
@@ -221,7 +235,7 @@ def artists():
 
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
-  # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
+  # implement search on artists with partial string search. Ensure it is case-insensitive.
 
   search_term = request.form.get('search_term', '')
   artist_query = Artist.query.filter(Artist.name.ilike('%' + search_term + '%'))
@@ -249,7 +263,7 @@ def show_artist(artist_id):
   artist_data = {}
   artist_data['id'] = artist.id
   artist_data['name'] = artist.name
-  artist_data['genres'] = json.loads(artist.genres)
+  artist_data['genres'] = artist.genres
   artist_data['city'] = artist.city
   artist_data['state'] = artist.state
   artist_data['phone'] = artist.phone
@@ -297,7 +311,7 @@ def edit_artist(artist_id):
   artist_data={
     "id": artist.id,
     "name": artist.name,
-    "genres": json.loads(artist.genres),
+    "genres": artist.genres,
     "city": artist.city,
     "state": artist.state,
     "phone": artist.phone,
@@ -319,15 +333,11 @@ def edit_artist_submission(artist_id):
     try:
       artist = Artist.query.get(artist_id)
       artist_form = form.data
-      genres = json.dumps(artist_form['genres'])
-      artist.genres = genres
       for key in artist_form:
         if artist_form[key] == '': # skip empty fields
           continue
         if key == 'website_link':
           artist.__setattr__('website', artist_form[key])
-        if key == 'genres':
-          continue
         artist.__setattr__(key, artist_form[key])
       db.session.commit()
     except():
@@ -356,7 +366,7 @@ def edit_venue(venue_id):
   venue_data={
     "id": venue.id,
     "name": venue.name,
-    "genres": json.loads(venue.genres),
+    "genres": venue.genres,
     "address": venue.address,
     "city": venue.city,
     "state": venue.state,
@@ -379,15 +389,11 @@ def edit_venue_submission(venue_id):
     try:
       venue = Venue.query.get(venue_id)
       venue_form = form.data
-      genres = json.dumps(venue_form['genres'])
-      venue.genres = genres
       for key in venue_form:
         if venue_form[key] == '': # skip empty fields
           continue
         if key == 'website_link':
           venue.__setattr__('website', venue_form[key])
-        if key == 'genres':
-          continue
         venue.__setattr__(key, venue_form[key])
       db.session.commit()
     except():
@@ -423,10 +429,9 @@ def create_artist_submission():
   if form.validate():
     artist_form = form.data
     try:
-      genres = json.dumps(artist_form['genres'])
       artist = Artist(
         name=artist_form['name'],
-        genres=genres,
+        genres=artist_form['genres'],
         city=artist_form['city'],
         state=artist_form['state'],
         phone=artist_form['phone'],
