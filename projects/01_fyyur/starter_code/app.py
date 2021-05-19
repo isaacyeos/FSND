@@ -179,7 +179,7 @@ def create_venue_submission():
       )
       db.session.add(venue)
       db.session.commit()
-    except():
+    except:
       db.session.rollback()
       error = True
       print(sys.exc_info())
@@ -204,19 +204,22 @@ def delete_venue(venue_id):
 
   # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
   # clicking that button delete it from the db then redirect the user to the homepage
+  error = False
   try:
     venue = Venue.query.get(venue_id)
     db.session.delete(venue)
     db.session.commit()
-    flash('The Venue has been successfully deleted!')
-    return render_template('pages/home.html')
-  except exc.SQLAlchemyError as e:
-    print(str(e.__dict__['orig']))
-    db.session.rollback()
-    flash('Delete was unsuccessful. Try again!')
-    return redirect(url_for('venues'))
+  except:
+      db.session.rollback()
+      error = True
+      print(sys.exc_info())
   finally:
     db.session.close()
+  if error:
+    flash('Delete was unsuccessful. Try again!')
+    return redirect(url_for('venues'))
+  else:
+    flash('The Venue has been successfully deleted!')
     return render_template('pages/home.html')
 
 #  Artists
@@ -340,7 +343,7 @@ def edit_artist_submission(artist_id):
           artist.__setattr__('website', artist_form[key])
         artist.__setattr__(key, artist_form[key])
       db.session.commit()
-    except():
+    except:
       db.session.rollback()
       error = True
       print(sys.exc_info())
@@ -350,6 +353,7 @@ def edit_artist_submission(artist_id):
       flash('error committing to database')
       return redirect(url_for('show_artist', artist_id=artist_id))
     else:
+      flash('Artist successfully edited')
       return redirect(url_for('show_artist', artist_id=artist_id))
   else:
     for field, err in form.errors.items():
@@ -396,7 +400,7 @@ def edit_venue_submission(venue_id):
           venue.__setattr__('website', venue_form[key])
         venue.__setattr__(key, venue_form[key])
       db.session.commit()
-    except():
+    except:
       db.session.rollback()
       error = True
       print(sys.exc_info())
@@ -406,6 +410,7 @@ def edit_venue_submission(venue_id):
       flash('error committing to database')
       return redirect(url_for('show_venue', venue_id=venue_id))
     else:
+      flash('Venue successfully edited')
       return redirect(url_for('show_venue', venue_id=venue_id))
   else:
     for field, err in form.errors.items():
@@ -443,7 +448,7 @@ def create_artist_submission():
       )
       db.session.add(artist)
       db.session.commit()
-    except():
+    except:
       db.session.rollback()
       error = True
       print(sys.exc_info())
@@ -503,7 +508,7 @@ def create_show_submission():
       )
       db.session.add(show)
       db.session.commit()
-    except():
+    except:
       db.session.rollback()
       error = True
       print(sys.exc_info())
