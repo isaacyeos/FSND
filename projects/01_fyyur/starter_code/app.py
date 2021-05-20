@@ -26,8 +26,6 @@ moment = Moment(app)
 app.config.from_object('config')
 
 # TODO: connect to a local postgresql database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://yeo@localhost:5432/fyyur'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
@@ -74,9 +72,8 @@ def venues():
       venue_data = {}
       venue_data['id'] = venue.id
       venue_data['name'] = venue.name
-      shows = Show.query.filter(Show.venue_id == venue.id)
-      upcoming_shows = shows.filter(Show.start_time > datetime.datetime.now())
-      num_upcoming_shows = upcoming_shows.count()
+      upcoming_shows = list(filter(lambda show: show.start_time > datetime.datetime.now(), venue.shows))
+      num_upcoming_shows = len(upcoming_shows)
       venue_data['num_upcoming_shows'] = num_upcoming_shows
       city_state_data['venues'].append(venue_data)
     data.append(city_state_data)
@@ -94,7 +91,7 @@ def search_venues():
       venue_list.append({
           "id": venue.id,
           "name": venue.name,
-          "num_upcoming_shows": Show.query.filter(Show.venue_id == venue.id, Show.start_time > datetime.datetime.now()).count()
+          "num_upcoming_shows": len(list(filter(lambda show: show.start_time > datetime.datetime.now(), venue.shows)))
       })
 
   response = {
@@ -121,11 +118,10 @@ def show_venue(venue_id):
   if venue.seeking_description != None:
     venue_data['seeking_description'] = venue.seeking_description
   venue_data['image_link'] = venue.image_link
-  shows = Show.query.filter(Show.venue_id == venue.id)
-  upcoming_shows = shows.filter(Show.start_time > datetime.datetime.now())
-  past_shows = shows.filter(Show.start_time <= datetime.datetime.now())
-  upcoming_shows_count = upcoming_shows.count()
-  past_shows_count = past_shows.count()
+  upcoming_shows = list(filter(lambda show: show.start_time > datetime.datetime.now(), venue.shows))
+  past_shows = list(filter(lambda show: show.start_time <= datetime.datetime.now(), venue.shows))
+  upcoming_shows_count = len(upcoming_shows)
+  past_shows_count = len(past_shows)
   venue_data['past_shows_count'] = past_shows_count
   venue_data['upcoming_shows_count'] = upcoming_shows_count
 
@@ -247,8 +243,7 @@ def search_artists():
     artist_list.append({
       "id": artist.id,
       "name": artist.name,
-      "num_upcoming_shows": Show.query.filter(Show.artist_id == artist.id,
-                                              Show.start_time > datetime.datetime.now()).count()
+      "num_upcoming_shows": len(list(filter(lambda show: show.start_time > datetime.datetime.now(), artist.shows)))
     })
 
   response = {
@@ -277,11 +272,10 @@ def show_artist(artist_id):
   if artist.seeking_description != None:
     artist_data['seeking_description'] = artist.seeking_description
   artist_data['image_link'] = artist.image_link
-  shows = Show.query.filter(Show.artist_id == artist.id)
-  upcoming_shows = shows.filter(Show.start_time > datetime.datetime.now())
-  past_shows = shows.filter(Show.start_time <= datetime.datetime.now())
-  upcoming_shows_count = upcoming_shows.count()
-  past_shows_count = past_shows.count()
+  upcoming_shows = list(filter(lambda show: show.start_time > datetime.datetime.now(), artist.shows))
+  past_shows = list(filter(lambda show: show.start_time <= datetime.datetime.now(), artist.shows))
+  upcoming_shows_count = len(upcoming_shows)
+  past_shows_count = len(past_shows)
   artist_data['past_shows_count'] = past_shows_count
   artist_data['upcoming_shows_count'] = upcoming_shows_count
 
