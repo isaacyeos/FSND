@@ -180,3 +180,17 @@ python3 app.py
 6. **Verify on the Browser**<br>
 Navigate to project homepage [http://127.0.0.1:5000/](http://127.0.0.1:5000/) or [http://localhost:5000](http://localhost:5000) 
 
+## Database
+If the database hasn't yet been created, run the following:
+```
+createdb fyyur
+flask db upgrade
+```
+
+To reset the database to a clean slate, run the following:
+```
+dropdb fyyur && createdb fyyur
+flask db upgrade
+```
+
+You may optionally choose to run the script `populate_db.py` to populate the database with initial dummy data.
