@@ -27,7 +27,7 @@ With Postgres running, restore the database using the trivia.psql file provided.
 ```bash
 psql trivia < trivia.psql
 ```
-This database is set to have the Owner 'yeo'. Change it trivia.psql script accordingly to use your postgresql username.
+This database is set to have the Owner 'yeo'. Change the trivia.psql script accordingly to use your postgresql username.
 
 ### Running the server
 
@@ -142,7 +142,7 @@ flask run
 #### DELETE /questions/{question_id}
 - General:
     - Deletes the question of the given ID if it exists. Returns the id of the deleted question, success value, total questions, and question list based on current page number to update the frontend. 
-- `curl -X DELETE http://127.0.0.1:5000/books/33?page=1`
+- Sample: `curl -X DELETE http://127.0.0.1:5000/books/33?page=1`
 ```
 {'deleted': 33,
  'questions': [{'answer': 'Apollo 13',
@@ -210,7 +210,7 @@ flask run
 #### POST /questions
 - General:
     - Creates a new question using the submitted question, answer, category and difficulty. Returns the id of the created question, success value, total questions, and question list based on current page number to update the frontend. 
-- `curl http://127.0.0.1:5000/questions?page=2 -X POST -H "Content-Type: application/json" -d '{"question":"What is the meaning of life?", "answer":"The pursuit of happiness", "category":2, "difficulty":1}'`
+- Sample: `curl http://127.0.0.1:5000/questions?page=2 -X POST -H "Content-Type: application/json" -d '{"question":"What is the meaning of life?", "answer":"The pursuit of happiness", "category":2, "difficulty":1}'`
 ```
 {'created': 35,
  'questions': [{'answer': 'Agra',
@@ -275,7 +275,7 @@ flask run
 #### GET /categories/{category_id}/questions
 - General:
     - Gets questions belonging to the specified category ID. Returns the success value, total questions, selected category type, and question list based on current page number to update the frontend. 
-- `curl http://127.0.0.1:5000/categories/4/questions`
+- Sample: `curl http://127.0.0.1:5000/categories/4/questions`
 ```
 {
   "currentCategory": "History",
@@ -317,7 +317,7 @@ flask run
 #### POST /questions
 - General:
     - Gets questions based on a search term. Returns any questions for whom the search term is a substring of the question. Returns the success value, total questions, and question list based on current page number to update the frontend. 
-- `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm":"world cup"}'`
+- Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm":"world cup"}'`
 ```
 {
   "questions": [
@@ -344,7 +344,7 @@ flask run
 #### POST /quizzes
 - General:
     - Gets questions to play the quiz. Takes category and previous question parameters and returns a random question within the given category (if not provided, defaults to Science), and that is not one of the previous questions. 
-- `curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [1, 4, 20, 15], "quiz_category": "Entertainment"}'` (Remember to enclose all json keys and values in double quotes)
+- Sample: `curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [1, 4, 20, 15], "quiz_category": "Entertainment"}'` (Remember to enclose all json keys and values in double quotes)
 ```
 {
   "question": {
