@@ -54,7 +54,7 @@ class QuizView extends Component {
       contentType: 'application/json',
       data: JSON.stringify({
         previous_questions: previousQuestions,
-        quiz_category: this.state.quizCategory
+        quiz_category: this.state.quizCategory.type
       }),
       xhrFields: {
         withCredentials: true
@@ -71,7 +71,7 @@ class QuizView extends Component {
         return;
       },
       error: (error) => {
-        alert('Unable to load question. Please try your request again')
+        alert(error.responseJSON.error + " " + error.responseJSON.message + ". Please try again.")
         return;
       }
     })
@@ -104,7 +104,6 @@ class QuizView extends Component {
           <div className="quiz-play-holder">
               <div className="choose-header">Choose Category</div>
               <div className="category-holder">
-                  <div className="play-category" onClick={this.selectCategory}>ALL</div>
                   {Object.keys(this.state.categories).map(id => {
                   return (
                     <div
