@@ -13,7 +13,7 @@ Features of the app:
 ## About the Stack
 
 ### Backend
-The backend is built using Flask. For instructions on how to install dependencies for and run the backend, see [./backend](https://github.com/udacity/FSND/blob/master/projects/02_trivia_api/starter/backend/README.md)
+The backend is built using Flask. For instructions on how to install dependencies for and run the backend, see [./backend](https://github.com/isaacyeos/FSND/blob/master/projects/02_trivia_api/starter/backend/README.md)
 
 ### Frontend
 The frontend is built using React. For instructions on how to install dependencies for and run the frontend, see [./frontend](https://github.com/isaacyeos/FSND/blob/master/projects/02_trivia_api/starter/frontend/README.md)
