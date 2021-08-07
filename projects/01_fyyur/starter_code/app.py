@@ -5,17 +5,22 @@
 import json
 import dateutil.parser
 import babel
-from flask import Flask, render_template, request, Response, flash, redirect, url_for, abort, jsonify
+from flask import (
+    Flask,
+    render_template,
+    request,
+    flash,
+    redirect,
+    url_for
+)
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
-from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 import datetime
 import sys
-from sqlalchemy import exc
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -118,8 +123,13 @@ def show_venue(venue_id):
   if venue.seeking_description != None:
     venue_data['seeking_description'] = venue.seeking_description
   venue_data['image_link'] = venue.image_link
-  upcoming_shows = list(filter(lambda show: show.start_time > datetime.datetime.now(), venue.shows))
-  past_shows = list(filter(lambda show: show.start_time <= datetime.datetime.now(), venue.shows))
+  # using join query
+  past_shows = db.session.query(Show).join(Venue).filter(Show.venue_id == venue_id).filter(
+    Show.start_time <= datetime.datetime.now()).all()
+  upcoming_shows = db.session.query(Show).join(Venue).filter(Show.venue_id == venue_id).filter(
+    Show.start_time > datetime.datetime.now()).all()
+  # upcoming_shows = list(filter(lambda show: show.start_time > datetime.datetime.now(), venue.shows))
+  # past_shows = list(filter(lambda show: show.start_time <= datetime.datetime.now(), venue.shows))
   upcoming_shows_count = len(upcoming_shows)
   past_shows_count = len(past_shows)
   venue_data['past_shows_count'] = past_shows_count
@@ -272,8 +282,13 @@ def show_artist(artist_id):
   if artist.seeking_description != None:
     artist_data['seeking_description'] = artist.seeking_description
   artist_data['image_link'] = artist.image_link
-  upcoming_shows = list(filter(lambda show: show.start_time > datetime.datetime.now(), artist.shows))
-  past_shows = list(filter(lambda show: show.start_time <= datetime.datetime.now(), artist.shows))
+  # using join query
+  past_shows = db.session.query(Show).join(Venue).filter(Show.artist_id == artist_id).filter(
+    Show.start_time <= datetime.datetime.now()).all()
+  upcoming_shows = db.session.query(Show).join(Venue).filter(Show.artist_id == artist_id).filter(
+    Show.start_time > datetime.datetime.now()).all()
+  # upcoming_shows = list(filter(lambda show: show.start_time > datetime.datetime.now(), artist.shows))
+  # past_shows = list(filter(lambda show: show.start_time <= datetime.datetime.now(), artist.shows))
   upcoming_shows_count = len(upcoming_shows)
   past_shows_count = len(past_shows)
   artist_data['past_shows_count'] = past_shows_count
