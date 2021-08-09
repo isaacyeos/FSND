@@ -248,8 +248,7 @@ def create_app(test_config=None):
     abort_422 = False
     try:
       if quiz_category == 'click':
-        questions = Question.query.all()
-        questions = [question for question in questions if question.id not in previous_questions]
+        questions = Question.query.filter(~Question.id.in_(previous_questions))
 
       else:
         category = Category.query.filter(Category.type == quiz_category).one_or_none()
@@ -258,12 +257,15 @@ def create_app(test_config=None):
           abort_422 = True
 
         else:
-          questions = Question.query.filter(Question.category == category.id)
-          questions = [question for question in questions if question.id not in previous_questions]
+          questions = Question.query.filter(Question.category == category.id, ~Question.id.in_(previous_questions))
 
       if not abort_422:
+        questions = [question for question in questions]
+
         if len(questions) == 0:
-          abort_422 = True
+          return jsonify({
+            'question': None
+          })
 
         else:
           question = random.choice(questions)
