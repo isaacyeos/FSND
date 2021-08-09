@@ -153,6 +153,9 @@ def create_app(test_config=None):
     new_difficulty = body.get('difficulty', None)
     search = body.get('searchTerm', None)
 
+    if not search and (not new_question or not new_answer):
+      abort(500)
+
     try:
       if search:
         selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
@@ -162,6 +165,13 @@ def create_app(test_config=None):
           'success': True,
           'questions': current_questions,
           'total_questions': len(selection.all())
+        })
+
+      elif search == '':
+        return jsonify({
+          'success': True,
+          'questions': [],
+          'total_questions': 0
         })
 
       else:
@@ -233,18 +243,25 @@ def create_app(test_config=None):
     body = request.get_json()
 
     previous_questions = body.get('previous_questions', [])
-    quiz_category = body.get('quiz_category', 'Science')
+    quiz_category = body.get('quiz_category', 'click')
 
     abort_422 = False
     try:
-      category = Category.query.filter(Category.type == quiz_category).one_or_none()
-
-      if category is None:
-        abort_422 = True
+      if quiz_category == 'click':
+        questions = Question.query.all()
+        questions = [question for question in questions if question.id not in previous_questions]
 
       else:
-        questions = Question.query.filter(Question.category == category.id)
-        questions = [question for question in questions if question.id not in previous_questions]
+        category = Category.query.filter(Category.type == quiz_category).one_or_none()
+
+        if category is None:
+          abort_422 = True
+
+        else:
+          questions = Question.query.filter(Question.category == category.id)
+          questions = [question for question in questions if question.id not in previous_questions]
+
+      if not abort_422:
         if len(questions) == 0:
           abort_422 = True
 
