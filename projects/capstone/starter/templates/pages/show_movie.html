@@ -1,0 +1,42 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Movie Search{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-6">
+		<h1 class="monospace">
+			{{ movie.title }}
+		</h1>
+		<p class="subtitle">
+			ID: {{ movie.id }}
+		</p>
+		<p>
+			<b>Release date:</b> {{ movie.release_date|datetime }}
+		</p>
+		<div class="row">
+			<img src="{{ movie.image_link }}" alt="Show Movie Image" />
+		</div>
+		<a href="/movies/{{ movie.id }}/edit"><button class="btn btn-primary btn-lg">Edit</button></a>
+		<form>
+    		<input type="submit" value="Delete Movie" class="btn btn-primary btn-lg" formmethod="post" formaction="{{ url_for('delete_movie', movie_id=movie.id) }}">
+		</form>
+	</div>
+</div>
+<section>
+	<h2 class="monospace">Actors</h2>
+	<div class="row">
+		{%for actor in movie.actors %}
+		<div class="col-sm-4">
+			<img src="{{ actor.image_link }}" alt="Show Actor Image" />
+			<h6>{{ actor.name }}</h6>
+			<form>
+				<input type="submit" value="Delete Actor" class="btn btn-primary btn-lg" formmethod="post" formaction="{{ url_for('delete_movie_actor', movie_id=movie.id, actor_id=actor.id) }}">
+			</form>
+		</div>
+		{% endfor %}
+	</div>
+</section>
+<form>
+	<input type="submit" value="Add Actor" class="btn btn-primary btn-lg" formmethod="get" formaction="{{ url_for('add_actor_form', movie_id=movie.id) }}">
+</form>
+{% endblock %}
+

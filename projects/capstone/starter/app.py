@@ -19,8 +19,9 @@ import logging
 from logging import Formatter, FileHandler
 from forms import *
 from flask_migrate import Migrate
-import datetime
 import sys
+import seeds
+from sqlalchemy import exc
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -40,14 +41,7 @@ from models import *
 #----------------------------------------------------------------------------#
 # Filters.
 #----------------------------------------------------------------------------#
-
-def format_datetime(value):
-  date = dateutil.parser.parse(value)
-  # if format == 'full':
-  #     format="EEEE MMMM, d, y 'at' h:mma"
-  # elif format == 'medium':
-  #     format="EE MM, dd, y h:mma"
-  # return babel.dates.format_datetime(date, format, locale='en')
+def format_datetime(date):
   return babel.dates.format_datetime(date, 'EEEE, MMMM dd y', locale='en')
 
 app.jinja_env.filters['datetime'] = format_datetime
@@ -58,76 +52,119 @@ app.jinja_env.filters['datetime'] = format_datetime
 
 @app.route('/')
 def index():
+  if Actor.query.count() == 0 and Movie.query.count() == 0:
+    movies = []
+    for movie in seeds.movies:
+      movieObject = Movie(title=movie['title'],
+                          release_date=movie['release_date'],
+                          image_link=movie['image_link'])
+      movies.append(movieObject)
+
+    actors = []
+    for actor in seeds.actors:
+      actorObject = Actor(name=actor['name'],
+                          age=actor['age'],
+                          gender=actor['gender'],
+                          image_link=actor['image_link'])
+      actors.append(actorObject)
+
+    actors[1].movies = movies
+    for movie in movies:
+      movie.actors = actors
+
+    for actor in actors:
+      try:
+        db.session.add(actor)
+        db.session.commit()
+      except exc.SQLAlchemyError as e:
+        print(str(e.__dict__['orig']))
+        db.session.rollback()
+        print("ERROR committing to database!")
+      finally:
+        db.session.close()
+
+    for movie in movies:
+      try:
+        db.session.add(movie)
+        db.session.commit()
+      except exc.SQLAlchemyError as e:
+        print(str(e.__dict__['orig']))
+        db.session.rollback()
+        print("ERROR committing to database!")
+      finally:
+        db.session.close()
   return render_template('pages/home.html')
 
 
-#  Venues
+#  Movies
 #  ----------------------------------------------------------------
 
-@app.route('/venues')
-def venues():
+@app.route('/movies')
+def movies():
   data = []
-  venues = Venue.query.all()
-  for venue in venues:
-    venue_data = {}
-    venue_data['id'] = venue.id
-    venue_data['name'] = venue.name
-    venue_data['release_date'] = venue.release_date
-    data.append(venue_data)
+  movies = Movie.query.all()
+  for movie in movies:
+    movie_data = {}
+    movie_data['id'] = movie.id
+    movie_data['title'] = movie.title
+    movie_data['release_date'] = movie.release_date
+    data.append(movie_data)
 
-  return render_template('pages/venues.html', venues=data)
+  return render_template('pages/movies.html', movies=data)
 
-@app.route('/venues/search', methods=['POST'])
-def search_venues():
-  # implement search on artists with partial string search. Ensure it is case-insensitive.
+@app.route('/movies/search', methods=['POST'])
+def search_movies():
+  # implement search on actors with partial string search. Ensure it is case-insensitive.
 
   search_term = request.form.get('search_term', '')
-  venue_query = Venue.query.filter(Venue.name.ilike('%' + search_term + '%'))
-  venue_list = []
-  for venue in venue_query:
-      venue_list.append({
-          "id": venue.id,
-          "name": venue.name,
-          "release_date": venue.release_date
+  movie_query = Movie.query.filter(Movie.title.ilike('%' + search_term + '%'))
+  movie_list = []
+  for movie in movie_query:
+      movie_list.append({
+          "id": movie.id,
+          "title": movie.title,
+          "release_date": movie.release_date
       })
 
   response = {
-      "count": len(venue_list),
-      "data": venue_list
+      "count": len(movie_list),
+      "data": movie_list
   }
-  return render_template('pages/search_venues.html', results=response, search_term=search_term)
+  return render_template('pages/search_movies.html', results=response, search_term=search_term)
 
-@app.route('/venues/<int:venue_id>')
-def show_venue(venue_id):
-  # shows the venue page with the given venue_id
-  venue = Venue.query.filter(Venue.id == venue_id)[0]
-  venue_data = {}
-  venue_data['id'] = venue.id
-  venue_data['name'] = venue.name
-  venue_data['release_date'] = venue.release_date
+@app.route('/movies/<int:movie_id>')
+def show_movie(movie_id):
+  # shows the movie page with the given movie_id
+  movie = Movie.query.filter(Movie.id == movie_id)[0]
+  movie_data = {}
+  movie_data['id'] = movie.id
+  movie_data['title'] = movie.title
+  movie_data['release_date'] = movie.release_date
+  movie_data['actors'] = movie.actors
+  movie_data['image_link'] = movie.image_link
 
-  return render_template('pages/show_venue.html', venue=venue_data)
+  return render_template('pages/show_movie.html', movie=movie_data)
 
-#  Create Venue
+#  Create Movie
 #  ----------------------------------------------------------------
 
-@app.route('/venues/create', methods=['GET'])
-def create_venue_form():
-  form = VenueForm()
-  return render_template('forms/new_venue.html', form=form)
+@app.route('/movies/create', methods=['GET'])
+def create_movie_form():
+  form = MovieForm()
+  return render_template('forms/new_movie.html', form=form)
 
-@app.route('/venues/create', methods=['POST'])
-def create_venue_submission():
+@app.route('/movies/create', methods=['POST'])
+def create_movie_submission():
   error = False
-  form = VenueForm(request.form, meta={'csrf': False})
+  form = MovieForm(request.form, meta={'csrf': False})
   if form.validate():
-    venue_form = form.data
+    movie_form = form.data
     try:
-      venue = Venue(
-        name=venue_form['name'],
-        release_date=venue_form['release_date']
+      movie = Movie(
+        title=movie_form['title'],
+        release_date=movie_form['release_date']
       )
-      db.session.add(venue)
+      db.session.add(movie)
       db.session.commit()
     except:
       db.session.rollback()
@@ -136,23 +173,23 @@ def create_venue_submission():
     finally:
       db.session.close()
     if error:
-      flash('An error occurred. Venue ' + venue_form['name'] + ' could not be listed.')
-      return redirect(url_for('create_venue_form'))
+      flash('An error occurred. Movie ' + movie_form['title'] + ' could not be listed.')
+      return redirect(url_for('create_movie_form'))
     else:
-      flash('Venue ' + venue_form['name'] + ' was successfully listed!')
+      flash('Movie ' + movie_form['title'] + ' was successfully listed!')
       return render_template('pages/home.html')
   else:
     for field, err in form.errors.items():
       for e in err:
         flash(field + ': ' + e)
-    return redirect(url_for('create_venue_form'))
+    return redirect(url_for('create_movie_form'))
 
-@app.route('/venues/<int:venue_id>', methods=['POST'])
-def delete_venue(venue_id):
+@app.route('/movies/<int:movie_id>', methods=['POST'])
+def delete_movie(movie_id):
   error = False
   try:
-    venue = Venue.query.get(venue_id)
-    db.session.delete(venue)
+    movie = Movie.query.get(movie_id)
+    db.session.delete(movie)
     db.session.commit()
   except:
       db.session.rollback()
@@ -162,90 +199,187 @@ def delete_venue(venue_id):
     db.session.close()
   if error:
     flash('Delete was unsuccessful. Try again!')
-    return redirect(url_for('venues'))
+    return redirect(url_for('movies'))
   else:
-    flash('The Venue has been successfully deleted!')
+    flash('The Movie has been successfully deleted!')
     return render_template('pages/home.html')
 
-#  Artists
+@app.route('/movies/add/<int:actor_id>', methods=['GET'])
+def add_movie_form(actor_id):
+  actor = Actor.query.get(actor_id)
+  movie_ids = [movie.id for movie in actor.movies]
+  movies = Movie.query.filter(~Movie.id.in_(movie_ids))
+  return render_template('forms/add_movie.html', movies=movies, actor_id=actor_id)
+
+@app.route('/movies/add/<int:actor_id>', methods=['POST'])
+def add_movie_submission(actor_id):
+  error = False
+  movie_titles = request.form.getlist('movies')
+  try:
+    actor = Actor.query.get(actor_id)
+    movies = Movie.query.filter(Movie.title.in_(movie_titles))
+    for movie in movies:
+      actor.movies.append(movie)
+    db.session.commit()
+  except:
+    db.session.rollback()
+    error = True
+    print(sys.exc_info())
+  finally:
+    db.session.close()
+  if error:
+    flash('error committing to database')
+    return redirect(url_for('show_actor', actor_id=actor_id))
+  else:
+    flash('Movie successfully added')
+    return redirect(url_for('show_actor', actor_id=actor_id))
+
+@app.route('/movies/<int:movie_id>/<int:actor_id>', methods=['POST'])
+def delete_movie_actor(actor_id, movie_id):
+  error = False
+  try:
+    movie = Movie.query.get(movie_id)
+    for actor in movie.actors:
+      if actor.id == actor_id:
+        movie.actors.remove(actor)
+    db.session.commit()
+  except:
+    db.session.rollback()
+    error = True
+    print(sys.exc_info())
+  finally:
+    db.session.close()
+  if error:
+    flash('error committing to database')
+    return redirect(url_for('show_movie', movie_id=movie_id))
+  else:
+    flash('Actor successfully deleted')
+    return redirect(url_for('show_movie', movie_id=movie_id))
+
+#  Actors
 #  ----------------------------------------------------------------
-@app.route('/artists')
-def artists():
+@app.route('/actors')
+def actors():
   data = []
-  artists = Artist.query.all()
-  for artist in artists:
-    artist_data = {}
-    artist_data['id'] = artist.id
-    artist_data['name'] = artist.name
-    artist_data['age'] = artist.age
-    artist_data['gender'] = artist.gender
-    data.append(artist_data)
+  actors = Actor.query.all()
+  for actor in actors:
+    actor_data = {}
+    actor_data['id'] = actor.id
+    actor_data['name'] = actor.name
+    actor_data['age'] = actor.age
+    actor_data['gender'] = actor.gender
+    data.append(actor_data)
 
-  return render_template('pages/artists.html', artists=data)
+  return render_template('pages/actors.html', actors=data)
 
-@app.route('/artists/search', methods=['POST'])
-def search_artists():
-  # implement search on artists with partial string search. Ensure it is case-insensitive.
+@app.route('/actors/search', methods=['POST'])
+def search_actors():
+  # implement search on actors with partial string search. Ensure it is case-insensitive.
 
   search_term = request.form.get('search_term', '')
-  artist_query = Artist.query.filter(Artist.name.ilike('%' + search_term + '%'))
-  artist_list = []
-  for artist in artist_query:
-    artist_list.append({
-      "id": artist.id,
-      "name": artist.name,
-      "age": artist.age,
-      "gender": artist.gender
+  actor_query = Actor.query.filter(Actor.name.ilike('%' + search_term + '%'))
+  actor_list = []
+  for actor in actor_query:
+    actor_list.append({
+      "id": actor.id,
+      "name": actor.name,
+      "age": actor.age,
+      "gender": actor.gender
     })
 
   response = {
-    "count": len(artist_list),
-    "data": artist_list
+    "count": len(actor_list),
+    "data": actor_list
   }
 
-  return render_template('pages/search_artists.html', results=response, search_term=search_term)
+  return render_template('pages/search_actors.html', results=response, search_term=search_term)
 
-@app.route('/artists/<int:artist_id>')
-def show_artist(artist_id):
-  # shows the artist page with the given artist_id
-  # TODO: use Artist.shows instead
-  artist = Artist.query.filter(Artist.id == artist_id)[0]
-  artist_data = {}
-  artist_data['id'] = artist.id
-  artist_data['name'] = artist.name
-  artist_data['age'] = artist.age
-  artist_data['gender'] = artist.gender
+@app.route('/actors/<int:actor_id>')
+def show_actor(actor_id):
+  # shows the actor page with the given actor_id
+  # TODO: use Actor.shows instead
+  actor = Actor.query.filter(Actor.id == actor_id)[0]
+  actor_data = {}
+  actor_data['id'] = actor.id
+  actor_data['name'] = actor.name
+  actor_data['age'] = actor.age
+  actor_data['gender'] = actor.gender
+  actor_data['movies'] = actor.movies
+  actor_data['image_link'] = actor.image_link
 
-  return render_template('pages/show_artist.html', artist=artist_data)
+  return render_template('pages/show_actor.html', actor=actor_data)
+
+@app.route('/actors/<int:actor_id>', methods=['POST'])
+def delete_actor(actor_id):
+  error = False
+  try:
+    actor = Actor.query.get(actor_id)
+    db.session.delete(actor)
+    db.session.commit()
+  except:
+      db.session.rollback()
+      error = True
+      print(sys.exc_info())
+  finally:
+    db.session.close()
+  if error:
+    flash('Delete was unsuccessful. Try again!')
+    return redirect(url_for('actors'))
+  else:
+    flash('The Actor has been successfully deleted!')
+    return render_template('pages/home.html')
+
+@app.route('/actors/<int:actor_id>/<int:movie_id>', methods=['POST'])
+def delete_actor_movie(actor_id, movie_id):
+  error = False
+  try:
+    actor = Actor.query.get(actor_id)
+    for movie in actor.movies:
+      if movie.id == movie_id:
+        actor.movies.remove(movie)
+    db.session.commit()
+  except:
+    db.session.rollback()
+    error = True
+    print(sys.exc_info())
+  finally:
+    db.session.close()
+  if error:
+    flash('error committing to database')
+    return redirect(url_for('show_actor', actor_id=actor_id))
+  else:
+    flash('Movie successfully deleted')
+    return redirect(url_for('show_actor', actor_id=actor_id))
 
 #  Update
 #  ----------------------------------------------------------------
-@app.route('/artists/<int:artist_id>/edit', methods=['GET'])
-def edit_artist(artist_id):
-  form = ArtistForm()
-  artist = Artist.query.filter(Artist.id == artist_id)[0]
-  artist_data={
-    "id": artist.id,
-    "name": artist.name,
-    "age": artist.age,
-    "gender": artist.gender
+@app.route('/actors/<int:actor_id>/edit', methods=['GET'])
+def edit_actor(actor_id):
+  form = ActorForm()
+  actor = Actor.query.filter(Actor.id == actor_id)[0]
+  actor_data={
+    "id": actor.id,
+    "name": actor.name,
+    "age": actor.age,
+    "gender": actor.gender,
+    "image_link": actor.image_link
   }
-  # TODO: populate form with fields from artist with ID <artist_id>
-  return render_template('forms/edit_artist.html', form=form, artist=artist_data)
+  # TODO: populate form with fields from actor with ID <actor_id>
+  return render_template('forms/edit_actor.html', form=form, actor=actor_data)
 
-@app.route('/artists/<int:artist_id>/edit', methods=['POST'])
-def edit_artist_submission(artist_id):
-  # artist record with ID <artist_id> using the new attributes
+@app.route('/actors/<int:actor_id>/edit', methods=['POST'])
+def edit_actor_submission(actor_id):
+  # actor record with ID <actor_id> using the new attributes
   error = False
-  form = ArtistForm(request.form, meta={'csrf': False})
+  form = ActorForm(request.form, meta={'csrf': False})
   if form.validate():
     try:
-      artist = Artist.query.get(artist_id)
-      artist_form = form.data
-      for key in artist_form:
-        if artist_form[key] == '': # skip empty fields
+      actor = Actor.query.get(actor_id)
+      actor_form = form.data
+      for key in actor_form:
+        if actor_form[key] == '': # skip empty fields
           continue
-        artist.__setattr__(key, artist_form[key])
+        actor.__setattr__(key, actor_form[key])
       db.session.commit()
     except:
       db.session.rollback()
@@ -255,43 +389,74 @@ def edit_artist_submission(artist_id):
       db.session.close()
     if error:
       flash('error committing to database')
-      return redirect(url_for('show_artist', artist_id=artist_id))
+      return redirect(url_for('show_actor', actor_id=actor_id))
     else:
-      flash('Artist successfully edited')
-      return redirect(url_for('show_artist', artist_id=artist_id))
+      flash('Actor successfully edited')
+      return redirect(url_for('show_actor', actor_id=actor_id))
   else:
     for field, err in form.errors.items():
       for e in err:
         flash(field + ': ' + e)
     # https://stackoverflow.com/questions/21294889/how-to-get-access-to-error-message-from-abort-command-when-using-custom-error-ha
     # abort(500, {'message': str(message)})
-    return redirect(url_for('show_artist', artist_id=artist_id))
+    return redirect(url_for('show_actor', actor_id=actor_id))
 
-@app.route('/venues/<int:venue_id>/edit', methods=['GET'])
-def edit_venue(venue_id):
-  form = VenueForm()
-  venue = Venue.query.filter(Venue.id == venue_id)[0]
-  venue_data={
-    "id": venue.id,
-    "name": venue.name,
-    "release_date": venue.release_date,
-  }
-  # TODO: populate form with values from venue with ID <venue_id>
-  return render_template('forms/edit_venue.html', form=form, venue=venue_data)
+@app.route('/actors/add/<int:movie_id>', methods=['GET'])
+def add_actor_form(movie_id):
+  movie = Movie.query.get(movie_id)
+  actor_ids = [actor.id for actor in movie.actors]
+  actors = Actor.query.filter(~Actor.id.in_(actor_ids))
+  return render_template('forms/add_actor.html', actors=actors, movie_id=movie_id)
 
-@app.route('/venues/<int:venue_id>/edit', methods=['POST'])
-def edit_venue_submission(venue_id):
-  # venue record with ID <venue_id> using the new attributes
+@app.route('/actors/add/<int:movie_id>', methods=['POST'])
+def add_actor_submission(movie_id):
   error = False
-  form = VenueForm(request.form, meta={'csrf': False})
+  actor_names = request.form.getlist('actors')
+  try:
+    movie = Movie.query.get(movie_id)
+    actors = Actor.query.filter(Actor.name.in_(actor_names))
+    for actor in actors:
+      movie.actors.append(actor)
+    db.session.commit()
+  except:
+    db.session.rollback()
+    error = True
+    print(sys.exc_info())
+  finally:
+    db.session.close()
+  if error:
+    flash('error committing to database')
+    return redirect(url_for('show_movie', movie_id=movie_id))
+  else:
+    flash('Actor successfully added')
+    return redirect(url_for('show_movie', movie_id=movie_id))
+
+@app.route('/movies/<int:movie_id>/edit', methods=['GET'])
+def edit_movie(movie_id):
+  form = MovieForm()
+  movie = Movie.query.filter(Movie.id == movie_id)[0]
+  movie_data={
+    "id": movie.id,
+    "title": movie.title,
+    "release_date": movie.release_date,
+    "image_link": movie.image_link
+  }
+  # TODO: populate form with values from movie with ID <movie_id>
+  return render_template('forms/edit_movie.html', form=form, movie=movie_data)
+
+@app.route('/movies/<int:movie_id>/edit', methods=['POST'])
+def edit_movie_submission(movie_id):
+  # movie record with ID <movie_id> using the new attributes
+  error = False
+  form = MovieForm(request.form, meta={'csrf': False})
   if form.validate():
     try:
-      venue = Venue.query.get(venue_id)
-      venue_form = form.data
-      for key in venue_form:
-        if venue_form[key] == '': # skip empty fields
+      movie = Movie.query.get(movie_id)
+      movie_form = form.data
+      for key in movie_form:
+        if movie_form[key] == '': # skip empty fields
           continue
-        venue.__setattr__(key, venue_form[key])
+        movie.__setattr__(key, movie_form[key])
       db.session.commit()
     except:
       db.session.rollback()
@@ -301,38 +466,38 @@ def edit_venue_submission(venue_id):
       db.session.close()
     if error:
       flash('error committing to database')
-      return redirect(url_for('show_venue', venue_id=venue_id))
+      return redirect(url_for('show_movie', movie_id=movie_id))
     else:
-      flash('Venue successfully edited')
-      return redirect(url_for('show_venue', venue_id=venue_id))
+      flash('Movie successfully edited')
+      return redirect(url_for('show_movie', movie_id=movie_id))
   else:
     for field, err in form.errors.items():
       for e in err:
         flash(field + ': ' + e)
-  return redirect(url_for('show_venue', venue_id=venue_id))
+  return redirect(url_for('show_movie', movie_id=movie_id))
 
-#  Create Artist
+#  Create Actor
 #  ----------------------------------------------------------------
 
-@app.route('/artists/create', methods=['GET'])
-def create_artist_form():
-  form = ArtistForm()
-  return render_template('forms/new_artist.html', form=form)
+@app.route('/actors/create', methods=['GET'])
+def create_actor_form():
+  form = ActorForm()
+  return render_template('forms/new_actor.html', form=form)
 
-@app.route('/artists/create', methods=['POST'])
-def create_artist_submission():
-  # called upon submitting the new artist listing form
+@app.route('/actors/create', methods=['POST'])
+def create_actor_submission():
+  # called upon submitting the new actor listing form
   error = False
-  form = ArtistForm(request.form, meta={'csrf': False})
+  form = ActorForm(request.form, meta={'csrf': False})
   if form.validate():
-    artist_form = form.data
+    actor_form = form.data
     try:
-      artist = Artist(
-        name=artist_form['name'],
-        age=artist_form['age'],
-        gender=artist_form['gender']
+      actor = Actor(
+        name=actor_form['name'],
+        age=actor_form['age'],
+        gender=actor_form['gender']
       )
-      db.session.add(artist)
+      db.session.add(actor)
       db.session.commit()
     except:
       db.session.rollback()
@@ -341,16 +506,16 @@ def create_artist_submission():
     finally:
       db.session.close()
     if error:
-      flash('An error occurred. Artist ' + artist_form['name'] + ' could not be listed.')
-      return redirect(url_for('create_artist_form'))
+      flash('An error occurred. Actor ' + actor_form['name'] + ' could not be listed.')
+      return redirect(url_for('create_actor_form'))
     else:
-      flash('Artist ' + artist_form['name'] + ' was successfully listed!')
+      flash('Actor ' + actor_form['name'] + ' was successfully listed!')
       return render_template('pages/home.html')
   else:
     for field, err in form.errors.items():
       for e in err:
         flash(field + ': ' + e)
-    return redirect(url_for('create_artist_form'))
+    return redirect(url_for('create_actor_form'))
 
 @app.errorhandler(404)
 def not_found_error(error):

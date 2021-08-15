@@ -53,33 +53,33 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li>
-              {% if (request.endpoint == 'venues') or
-                (request.endpoint == 'search_venues') or
-                (request.endpoint == 'show_venue') %}
-              <form class="search" method="post" action="/venues/search">
+              {% if (request.endpoint == 'movies') or
+                (request.endpoint == 'search_movies') or
+                (request.endpoint == 'show_movie') %}
+              <form class="search" method="post" action="/movies/search">
                 <input class="form-control"
                   type="search"
                   name="search_term"
-                  placeholder="Find a venue"
+                  placeholder="Find a movie"
                   aria-label="Search">
               </form>
               {% endif %}
-              {% if (request.endpoint == 'artists') or
-                (request.endpoint == 'search_artists') or
-                (request.endpoint == 'show_artist') %}
-              <form class="search" method="post" action="/artists/search">
+              {% if (request.endpoint == 'actors') or
+                (request.endpoint == 'search_actors') or
+                (request.endpoint == 'show_actor') %}
+              <form class="search" method="post" action="/actors/search">
                 <input class="form-control"
                   type="search"
                   name="search_term"
-                  placeholder="Find an artist"
+                  placeholder="Find an actor"
                   aria-label="Search">
               </form>
               {% endif %}
             </li>
           </ul>
           <ul class="nav navbar-nav">
-            <li {% if request.endpoint == 'venues' %} class="active" {% endif %}><a href="{{ url_for('venues') }}">Venues</a></li>
-            <li {% if request.endpoint == 'artists' %} class="active" {% endif %}><a href="{{ url_for('artists') }}">Artists</a></li>
+            <li {% if request.endpoint == 'movies' %} class="active" {% endif %}><a href="{{ url_for('movies') }}">Movies</a></li>
+            <li {% if request.endpoint == 'actors' %} class="active" {% endif %}><a href="{{ url_for('actors') }}">Actors</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

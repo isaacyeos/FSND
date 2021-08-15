@@ -1,0 +1,15 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Add Actor{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form method="post" class="form">
+      <h3 class="form-heading">Select Actors <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+        {% for actor in actors %}
+            <input type="checkbox" id="{{ actor.name }}" name="actors" value="{{ actor.name }}"/>
+            <label for="{{ actor.name }}"> {{ actor.name }}</label><br>
+        {% endfor %}
+
+	    <input type="submit" value="Add Actor" class="btn btn-primary btn-lg" formmethod="post" formaction="{{ url_for('add_actor_submission', movie_id=movie_id) }}">
+    </form>
+  </div>
+{% endblock %}

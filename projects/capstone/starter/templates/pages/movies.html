@@ -1,13 +1,13 @@
 {% extends 'layouts/main.html' %}
-{% block title %}Fyyur | Venues{% endblock %}
+{% block title %}Fyyur | Movies{% endblock %}
 {% block content %}
 <ul class="items">
-	{% for venue in venues %}
+	{% for movie in movies %}
 	<li>
-		<a href="/venues/{{ venue.id }}">
+		<a href="/movies/{{ movie.id }}">
 			<i class="fas fa-music"></i>
 			<div class="item">
-				<h5>{{ venue.name }}</h5>
+				<h5>{{ movie.title }}</h5>
 			</div>
 		</a>
 	</li>

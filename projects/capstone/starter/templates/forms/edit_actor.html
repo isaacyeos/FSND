@@ -1,9 +1,9 @@
 {% extends 'layouts/main.html' %}
-{% block title %}New Artist{% endblock %}
+{% block title %}Edit Actor{% endblock %}
 {% block content %}
   <div class="form-wrapper">
-    <form method="post" class="form">
-      <h3 class="form-heading">List a new artist</h3>
+    <form class="form" method="post" action="/actors/{{actor.id}}/edit">
+      <h3 class="form-heading">Edit actor <em>{{ actor.name }}</em></h3>
       <div class="form-group">
         <label for="name">Name</label>
         {{ form.name(class_ = 'form-control', autofocus = true) }}
@@ -16,7 +16,11 @@
         <label for="gender">Gender</label>
         {{ form.gender(class_ = 'form-control', autofocus = true) }}
       </div>
-      <input type="submit" value="Create Artist" class="btn btn-primary btn-lg btn-block">
+      <div class="form-group">
+        <label for="image_link">Image Link</label>
+        {{ form.image_link(class_ = 'form-control', autofocus = true) }}
+      </div>
+      <input type="submit" value="Edit Actor" class="btn btn-primary btn-lg btn-block">
     </form>
   </div>
 {% endblock %}

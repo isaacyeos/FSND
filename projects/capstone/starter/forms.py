@@ -1,21 +1,22 @@
-from datetime import datetime
 from flask_wtf import Form
-from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField, DateField, IntegerField
-from wtforms.validators import DataRequired, AnyOf, URL, ValidationError
-import re
+from wtforms import StringField, DateField, IntegerField
+from wtforms.validators import DataRequired
 from datetime import date
 
-class VenueForm(Form):
-    name = StringField(
-        'name', validators=[DataRequired()]
+class MovieForm(Form):
+    title = StringField(
+        'title', validators=[DataRequired()]
     )
     release_date = DateField(
         'release_date',
         validators=[DataRequired()],
         default= date.today()
     )
+    image_link = StringField(
+        'image_link', validators=[DataRequired()]
+    )
 
-class ArtistForm(Form):
+class ActorForm(Form):
     name = StringField(
         'name', validators=[DataRequired()]
     )
@@ -25,4 +26,6 @@ class ArtistForm(Form):
     gender = StringField(
         'gender', validators=[DataRequired()]
     )
-
+    image_link = StringField(
+        'image_link', validators=[DataRequired()]
+    )
