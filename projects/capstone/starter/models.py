@@ -11,7 +11,7 @@ class Movie(db.Model): # change to Movie
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String, nullable=False) # change to title
     release_date = db.Column(db.Date, nullable=False)
-    image_link = db.Column(db.String, nullable=True)
+    image_link = db.Column(db.String, nullable=False)
     actors = db.relationship('Actor', secondary=association_table,
                              backref=db.backref('movies', lazy=True))
 
@@ -22,6 +22,6 @@ class Actor(db.Model): # change to Actor
     name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String, nullable=False)
-    image_link = db.Column(db.String, nullable=True)
+    image_link = db.Column(db.String, nullable=False)
 
 # https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many - for many-to-many relationships

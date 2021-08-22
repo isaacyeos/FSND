@@ -162,7 +162,8 @@ def create_movie_submission():
     try:
       movie = Movie(
         title=movie_form['title'],
-        release_date=movie_form['release_date']
+        release_date=movie_form['release_date'],
+        image_link=movie_form['image_link']
       )
       db.session.add(movie)
       db.session.commit()
@@ -495,7 +496,8 @@ def create_actor_submission():
       actor = Actor(
         name=actor_form['name'],
         age=actor_form['age'],
-        gender=actor_form['gender']
+        gender=actor_form['gender'],
+        image_link=actor_form['image_link']
       )
       db.session.add(actor)
       db.session.commit()
