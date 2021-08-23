@@ -1,4 +1,54 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+import seeds
+from sqlalchemy import exc
+import os
+
+# database_path = os.environ['DATABASE_URL']
+database_path = 'postgresql://yeo@localhost:5432/capstone'
+
+db = SQLAlchemy()
+
+def setup_db(app):
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    db.app = app
+    db.init_app(app)
+
+def populate_db():
+    movies = []
+    for movie in seeds.movies:
+        movieObject = Movie(title=movie['title'],
+                            release_date=movie['release_date'],
+                            image_link=movie['image_link'])
+        movies.append(movieObject)
+
+    actors = []
+    for actor in seeds.actors:
+        actorObject = Actor(name=actor['name'],
+                            age=actor['age'],
+                            gender=actor['gender'],
+                            image_link=actor['image_link'])
+        actors.append(actorObject)
+
+    actors[1].movies = movies
+    for movie in movies:
+        movie.actors = actors
+
+    for actor in actors:
+        try:
+            db.session.add(actor)
+            db.session.commit()
+        except exc.SQLAlchemyError as e:
+            print(str(e.__dict__['orig']))
+            db.session.rollback()
+            print("ERROR committing to database!")
+        finally:
+            db.session.close()
+
+def db_drop_and_create_all():
+    db.drop_all()
+    db.create_all()
+    populate_db()
 
 association_table = db.Table('association',
     db.Column('movie_id', db.Integer, db.ForeignKey('Movie.id'), primary_key=True),
