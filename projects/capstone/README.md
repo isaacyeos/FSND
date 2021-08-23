@@ -17,6 +17,13 @@ Follow instructions to install the latest version of python for your platform in
 
 We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virtual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 
+To set up a virtual env, you may run the following:
+```
+virtualenv --python=/usr/local/opt/python@3.9/bin/python3.9 <path_to_new_virtualenv>
+source <path_to_new_virtualenv>/bin/activate
+```
+
+
 #### PIP Dependencies
 
 Once you have your virtual environment setup and running, install dependencies by running:
@@ -31,23 +38,14 @@ This will install all of the required packages.
 
 Before running the application locally, replace `DATABASE_URL` in the `setup.sh` file in root directory with the name of your local database.
 
-If your local database hasn't yet been created, run the following:
-```
-createdb capstone
-flask db upgrade
-```
-
-To reset the database to a clean slate, run the following:
-```
-dropdb capstone && createdb capstone
-flask db upgrade
+Next, set the environment variables by running:
+```bash
+source setup.sh
 ```
 
 To run the server, execute:
 
 ```bash
-chmod +x setup.sh
-./setup.sh
 flask run --reload
 ```
 
@@ -55,13 +53,22 @@ The script `setup.sh` will set up all necessary environment variables. This incl
 
 Using the `--reload` flag will detect file changes and restart the server automatically.
 
-To run unit tests locally, run the following:
+To run unit tests locally, while the Flask server is running, open another shell window, and set up the environment variables again:
+```bash
+source setup.sh
+```
+
+Next, run the following:
 ```
 python -m unittest test.py
 ```
 
-If all tests pass, the output should be the following:
+If all tests pass, the output should contain the following:
 ```
+---------------------------------------------------------------
+Ran 26 tests in 14.382s
+
+OK
 ```
 
 ## Testing the hosted app
