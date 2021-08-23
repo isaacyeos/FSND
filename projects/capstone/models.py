@@ -4,6 +4,9 @@ from sqlalchemy import exc
 import os
 
 database_path = os.environ['DATABASE_URL']
+# https://stackoverflow.com/questions/62688256/sqlalchemy-exc-nosuchmoduleerror-cant-load-plugin-sqlalchemy-dialectspostgre
+if database_path.startswith("postgres://"):
+    database_path = database_path.replace("postgres://", "postgresql://", 1)
 # database_path = 'postgresql://yeo@localhost:5432/capstone'
 
 db = SQLAlchemy()
