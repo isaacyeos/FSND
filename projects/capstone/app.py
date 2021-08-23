@@ -10,10 +10,6 @@ from models import setup_db, Movie, Actor, db, db_drop_and_create_all
 from sqlalchemy import exc
 from flask_cors import CORS
 
-AUTH0_DOMAIN = 'dev-pkce2vgx.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'fsnd'
-
 def create_app(test_config=None):
   app = Flask(__name__)
   setup_db(app)
@@ -284,3 +280,4 @@ def create_app(test_config=None):
 
   return app
 
+app = create_app()

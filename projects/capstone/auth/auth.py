@@ -4,11 +4,14 @@ from functools import wraps
 from jose import jwt
 from jose.jwt import JWTError
 from urllib.request import urlopen
+import os
 
-
-AUTH0_DOMAIN = 'dev-pkce2vgx.us.auth0.com'
+# AUTH0_DOMAIN = 'dev-pkce2vgx.us.auth0.com'
+# ALGORITHMS = ['RS256']
+# API_AUDIENCE = 'fsnd'
+AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'fsnd'
+API_AUDIENCE = os.environ['API_AUDIENCE']
 
 ## AuthError Exception
 '''
