@@ -108,6 +108,9 @@ def create_app(test_config=None):
       actors = Actor.query.filter(Actor.name.in_(actor_names_new))
       for actor in actors:
         movie.actors.append(actor)
+      for actor in movie.actors:
+        if actor.name not in actor_names:
+          movie.actors.remove(actor)
       db.session.commit()
 
       return jsonify({"success": True,
@@ -230,6 +233,9 @@ def create_app(test_config=None):
       movies = Movie.query.filter(Movie.title.in_(movie_titles_new))
       for movie in movies:
         actor.movies.append(movie)
+      for movie in actor.movies:
+        if movie.title not in movie_titles:
+          actor.movies.remove(movie)
       db.session.commit()
 
       return jsonify({

@@ -33,13 +33,20 @@ def populate_db():
                             image_link=actor['image_link'])
         actors.append(actorObject)
 
-    actors[1].movies = movies
-    for movie in movies:
-        movie.actors = actors
-
     for actor in actors:
         try:
             db.session.add(actor)
+            db.session.commit()
+        except exc.SQLAlchemyError as e:
+            print(str(e.__dict__['orig']))
+            db.session.rollback()
+            print("ERROR committing to database!")
+        finally:
+            db.session.close()
+
+    for movie in movies:
+        try:
+            db.session.add(movie)
             db.session.commit()
         except exc.SQLAlchemyError as e:
             print(str(e.__dict__['orig']))
