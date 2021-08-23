@@ -1,0 +1,750 @@
+{
+	"info": {
+		"_postman_id": "24f47902-f6ba-4bb1-8f66-fa5a429e029c",
+		"name": "capstone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "assistant",
+			"item": [
+				{
+					"name": "GET /",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYjE3NWVhOWUwMDczYzZiYjdjIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzMDE3NCwiZXhwIjoxNjI5NzE2NTc0LCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.FogFYTSCfDj-8yHjpLzUcnqEjF888XdIdcuhtKDt9Iqukn_HGcN0cdsttw_vteMq7N1Au0l74cUOJxS1lM2klxnf1Rbyyjt3f0j89FAYEyLR_6MOXUfrddkyH_oo6fOjcljuyGxTuucucewbpRKwK89bDUdiOIv7_8d5LZLZijl65PTI5415EldDLTgEbKXxGbfJAMoLIEYHk0XVykwlLaFXAmp7X6gYClRg2zC-dQx2sF2YD1eRv03_J9QAOSABZBglKNaM61AUaTT9vatKM1tnmUmMYZbgjQwctvtKUz83h9q6KIvgCqSJfi0d6S2EjJN0xm_5jMkAaX4kGBYdBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /movies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYjE3NWVhOWUwMDczYzZiYjdjIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzMDE3NCwiZXhwIjoxNjI5NzE2NTc0LCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.FogFYTSCfDj-8yHjpLzUcnqEjF888XdIdcuhtKDt9Iqukn_HGcN0cdsttw_vteMq7N1Au0l74cUOJxS1lM2klxnf1Rbyyjt3f0j89FAYEyLR_6MOXUfrddkyH_oo6fOjcljuyGxTuucucewbpRKwK89bDUdiOIv7_8d5LZLZijl65PTI5415EldDLTgEbKXxGbfJAMoLIEYHk0XVykwlLaFXAmp7X6gYClRg2zC-dQx2sF2YD1eRv03_J9QAOSABZBglKNaM61AUaTT9vatKM1tnmUmMYZbgjQwctvtKUz83h9q6KIvgCqSJfi0d6S2EjJN0xm_5jMkAaX4kGBYdBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/movies",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /actors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYjE3NWVhOWUwMDczYzZiYjdjIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzMDE3NCwiZXhwIjoxNjI5NzE2NTc0LCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.FogFYTSCfDj-8yHjpLzUcnqEjF888XdIdcuhtKDt9Iqukn_HGcN0cdsttw_vteMq7N1Au0l74cUOJxS1lM2klxnf1Rbyyjt3f0j89FAYEyLR_6MOXUfrddkyH_oo6fOjcljuyGxTuucucewbpRKwK89bDUdiOIv7_8d5LZLZijl65PTI5415EldDLTgEbKXxGbfJAMoLIEYHk0XVykwlLaFXAmp7X6gYClRg2zC-dQx2sF2YD1eRv03_J9QAOSABZBglKNaM61AUaTT9vatKM1tnmUmMYZbgjQwctvtKUz83h9q6KIvgCqSJfi0d6S2EjJN0xm_5jMkAaX4kGBYdBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/actors",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /movies/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYjE3NWVhOWUwMDczYzZiYjdjIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzMDE3NCwiZXhwIjoxNjI5NzE2NTc0LCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.FogFYTSCfDj-8yHjpLzUcnqEjF888XdIdcuhtKDt9Iqukn_HGcN0cdsttw_vteMq7N1Au0l74cUOJxS1lM2klxnf1Rbyyjt3f0j89FAYEyLR_6MOXUfrddkyH_oo6fOjcljuyGxTuucucewbpRKwK89bDUdiOIv7_8d5LZLZijl65PTI5415EldDLTgEbKXxGbfJAMoLIEYHk0XVykwlLaFXAmp7X6gYClRg2zC-dQx2sF2YD1eRv03_J9QAOSABZBglKNaM61AUaTT9vatKM1tnmUmMYZbgjQwctvtKUz83h9q6KIvgCqSJfi0d6S2EjJN0xm_5jMkAaX4kGBYdBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/movies/1",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"movies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /actors/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYjE3NWVhOWUwMDczYzZiYjdjIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzMDE3NCwiZXhwIjoxNjI5NzE2NTc0LCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.FogFYTSCfDj-8yHjpLzUcnqEjF888XdIdcuhtKDt9Iqukn_HGcN0cdsttw_vteMq7N1Au0l74cUOJxS1lM2klxnf1Rbyyjt3f0j89FAYEyLR_6MOXUfrddkyH_oo6fOjcljuyGxTuucucewbpRKwK89bDUdiOIv7_8d5LZLZijl65PTI5415EldDLTgEbKXxGbfJAMoLIEYHk0XVykwlLaFXAmp7X6gYClRg2zC-dQx2sF2YD1eRv03_J9QAOSABZBglKNaM61AUaTT9vatKM1tnmUmMYZbgjQwctvtKUz83h9q6KIvgCqSJfi0d6S2EjJN0xm_5jMkAaX4kGBYdBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/actors/1",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"actors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "director",
+			"item": [
+				{
+					"name": "GET /",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /movies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/movies",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /actors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/actors",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /movies/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/movies/1",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"movies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /actors/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/actors/1",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"actors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /actors/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Christopher Robert Evans\",\n    \"age\": 40,\n    \"gender\": \"M\",\n    \"image_link\": \"https://upload.wikimedia.org/wikipedia/commons/3/33/Mark_Kassen%2C_Tony_C%C3%A1rdenas_and_Chris_Evans_%28cropped%29.jpg\",\n    \"movies\": [\"Avengers\", \"Captain America\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/actors/1",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"actors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /movies/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Avengers\",\n    \"release_date\": \"2021-01-01\",\n    \"image_link\": \"https://upload.wikimedia.org/wikipedia/en/8/8a/The_Avengers_%282012_film%29_poster.jpg\",\n    \"actors\": [\"Chris Hemsworth\", \"Mark Ruffalo\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/movies/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"movies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /movies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Avengers Endgame\",\n    \"release_date\": \"2019-01-01\",\n    \"image_link\": \"https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg\",\n    \"actors\": [\"Chris Evans\", \"Mark Ruffalo\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/movies",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /actors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Robert Downey Jr.\",\n    \"age\": 56,\n    \"gender\": \"M\",\n    \"image_link\": \"https://upload.wikimedia.org/wikipedia/commons/9/94/Robert_Downey_Jr_2014_Comic_Con_%28cropped%29.jpg\",\n    \"movies\": [\"Avengers\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/actors",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /actors/4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/actors/4",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"actors",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /movies/3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"success\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldndU1hQTREXy1wUklvTHZRUHpneSJ9.eyJpc3MiOiJodHRwczovL2Rldi1wa2NlMnZneC51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjExZjdiYzVhZWJiNGEwMDY5OTgzM2FkIiwiYXVkIjoiZnNuZCIsImlhdCI6MTYyOTYzNzYyMywiZXhwIjoxNjI5NzI0MDIzLCJhenAiOiJlNExWYjdLekhyUXZIYmtWSE1zUmtDUHNFNHhJNVVPRiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fmQJHOU-SLXAeTvnxBqQ3eHVeFsv6UX4K4IzP9jvtguCignUGvUU-c3hJcaanXwoK7Kr6DE-8R2XXmdq_c9ylb_FL19c_RajgAeltf80BF1pZ4ZP1z-gtSsUWFqHd_1rVrRT-TIWHTApwLxa56ZQ_VVyp_h4po35sQq3_-mEXHMHBc6FPr41rgSoLK4VgkI4lBGU0gHFzpQ84rYVOUuCXLSHKLVED9OweLgVgY3H8HP8DJc96JxoaX_-FrpuSzGGVUNHAiFezyvNtrlnQzECOR_TZXiuUh0EGCRJ17OLix1vxNVNfhy6z3sidotGSx-UMKV5Y9jDCr4wJaADiktKBQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://fsnd-isaac.herokuapp.com/movies/3",
+							"protocol": "https",
+							"host": [
+								"fsnd-isaac",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"movies",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
